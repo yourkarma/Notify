@@ -11,12 +11,15 @@ struct PresentedNotification {
 }
 
 public protocol PresenterType {
-    func present(notification: Notification, statusBar: Bool)
+    func present(notification: Notification, showStatusBar: Bool)
 }
 
 public class Presenter: PresenterType {
+    
     static var presentedNotification: PresentedNotification? = nil
     static var notificationQueue: [(Notification, Bool)] = []
+    
+    var dismissAfter: NSTimeInterval?
 
     let themeProvider: ThemeProvider
 
@@ -24,15 +27,15 @@ public class Presenter: PresenterType {
         self.themeProvider = themeProvider
     }
 
-    public func present(notification: Notification, statusBar: Bool = false) {
+    public func present(notification: Notification, showStatusBar: Bool = false) {
         if Presenter.presentedNotification == nil {
-            self.makeNotificationVisible(notification, statusBarHeight: statusBar ? 0 : 1)
+            self.makeNotificationVisible(notification, statusBarHeight: showStatusBar ? 1 : 0)
         } else {
-            Presenter.notificationQueue.append((notification, statusBar))
+            Presenter.notificationQueue.append((notification, showStatusBar))
         }
     }
 
-    func makeNotificationVisible(notification: Notification, statusBarHeight: CGFloat = 1) {
+    func makeNotificationVisible(notification: Notification, statusBarHeight: CGFloat = 0) {
         
         let window = self.makeNotificationWindowWithStatusBarHeight(statusBarHeight)
         let view = self.makeNotificationViewForNotification(notification)
@@ -88,12 +91,14 @@ public class Presenter: PresenterType {
             window.touchCallback = {
                 if let presentedAt = Presenter.presentedNotification?.presentedAt {
 
-                    let elapsedSeconds = NSDate().timeIntervalSinceReferenceDate - presentedAt
-                    let minimumSecondsNotificationShouldBeVisible: NSTimeInterval = 3
-
-                    let waitFor = minimumSecondsNotificationShouldBeVisible - elapsedSeconds
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(waitFor * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                        self.hidePresentedNotification()
+                    if let timeInterval: NSTimeInterval = self.dismissAfter {
+                        let elapsedSeconds = NSDate().timeIntervalSinceReferenceDate - presentedAt
+                        let minimumSecondsNotificationShouldBeVisible: NSTimeInterval = timeInterval
+                        
+                        let waitFor = minimumSecondsNotificationShouldBeVisible - elapsedSeconds
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(waitFor * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                            self.hidePresentedNotification()
+                        }
                     }
 
                     // There are cases where the NotificationWindow touchCallback is called multiple times for the same
@@ -116,10 +121,11 @@ public class Presenter: PresenterType {
             }, completion: { _ in
                 window.hidden = true
                 Presenter.presentedNotification = nil
-
+                NSNotificationCenter.defaultCenter().postNotificationName("didDismissNotiftyNotification", object: nil, userInfo: nil)
+                
                 if Presenter.notificationQueue.count > 0 {
                     let notification = Presenter.notificationQueue.removeAtIndex(0)
-                    self.present(notification.0, statusBar: notification.1)
+                    self.present(notification.0, showStatusBar: notification.1)
                 }
             })
         }
@@ -139,7 +145,15 @@ public class Presenter: PresenterType {
         view.backgroundColor = self.themeProvider.backgroundColorForNotification(notification)
 
         let imageView = UIImageView()
+        
         imageView.image = self.themeProvider.iconForNotification(notification)
+        
+        var shouldShowImage = false
+        
+        if let _ :UIImage = imageView.image {
+            shouldShowImage = true
+        }
+        
         view.addSubview(imageView)
 
         let label = self.themeProvider.labelForNotification(notification)
@@ -165,8 +179,15 @@ public class Presenter: PresenterType {
         imageView.setContentHuggingPriority(252, forAxis: .Horizontal)
         imageView.setContentHuggingPriority(252, forAxis: .Vertical)
         label.setContentHuggingPriority(251, forAxis: .Horizontal)
-
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-15-[icon]-10-[label]-15-|", options: [], metrics: nil, views: views))
+        
+        let horizontalLabelContraints = shouldShowImage ? "H:|-15-[icon]-10-[label]-15-|" : "H:|-(>=15)-[label]-(>=15)-|"
+        
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(horizontalLabelContraints, options: [], metrics: nil, views: views))
+        
+        if !shouldShowImage {
+            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
+        }
+        
 
         var previousButton: UIButton? = nil
         for (index, button) in buttons.enumerate() {
@@ -194,7 +215,8 @@ public class Presenter: PresenterType {
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-15-[button]-10-|", options: [], metrics: nil, views: viewsWithButton))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: viewsWithButton))
         } else {
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-10-|", options: [], metrics: nil, views: views))
+            let verticalLabelContraints = shouldShowImage ? "V:|-10-[label]-10-|" : "V:|-30-[label]-10-|"
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalLabelContraints, options: [], metrics: nil, views: views))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: views))
         }
 
@@ -231,7 +253,7 @@ public class Presenter: PresenterType {
         let screen = UIScreen.mainScreen()
         let window = NotificationWindow(frame: CGRect(x: 0.0, y: 0.0, width: screen.bounds.width, height: screen.bounds.height))
         
-        window.windowLevel = UIWindowLevelStatusBar + height
+        window.windowLevel = UIWindowLevelStatusBar - height
         window.backgroundColor = .clearColor()
         
         // A root view controller is necessary for the window

@@ -2,6 +2,7 @@ public struct Notification {
     public enum Level {
         case Error
         case Success
+        case Default
     }
 
     public let level: Notification.Level

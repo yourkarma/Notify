@@ -1,7 +1,7 @@
 import UIKit
 
 public struct Notifier {
-    let presenter: PresenterType
+    public let presenter: PresenterType
 
     let themeProvider: ThemeProvider
 
@@ -15,12 +15,12 @@ public struct Notifier {
     }
 
     public func notify(notification: Notification, withStatusBar: Bool = false) {
-        self.presenter.present(notification, statusBar: withStatusBar)
+        self.presenter.present(notification, showStatusBar: withStatusBar)
     }
 }
 
 public protocol ThemeProvider {
-    func iconForNotification(notification: Notification) -> UIImage
+    func iconForNotification(notification: Notification) -> UIImage?
     func labelForNotification(notification: Notification) -> UILabel
     func backgroundColorForNotification(notification: Notification) -> UIColor
     func buttonForNotification(notification: Notification, action: Notification.Action) -> UIButton
