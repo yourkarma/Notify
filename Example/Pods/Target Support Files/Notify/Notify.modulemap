@@ -1,0 +1,6 @@
+framework module Notify {
+  umbrella header "Notify-umbrella.h"
+
+  export *
+  module * { export * }
+}
