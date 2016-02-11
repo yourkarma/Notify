@@ -1,6 +1,6 @@
 # Notify
 
-[![CI Status](http://img.shields.io/travis/mykarma/Notify.svg?style=flat)](https://travis-ci.org/mykarma/Notify)
+[![CI Status](http://img.shields.io/travis/yourkarma/Notify.svg?style=flat)](https://travis-ci.org/yourkarma/Notify)
 [![Version](https://img.shields.io/cocoapods/v/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 [![License](https://img.shields.io/cocoapods/l/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 [![Platform](https://img.shields.io/cocoapods/p/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
