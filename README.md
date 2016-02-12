@@ -1,19 +1,26 @@
 # Notify
 
-[![CI Status](http://img.shields.io/travis/yourkarma/Notify.svg?style=flat)](https://travis-ci.org/yourkarma/Notify)
 [![Version](https://img.shields.io/cocoapods/v/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 [![License](https://img.shields.io/cocoapods/l/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 [![Platform](https://img.shields.io/cocoapods/p/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 
-## Example
+The purpose of Notify is to present addressable notification to your users within your app.
+Examples might include asking users to address permissions or whether they've seen some information relevant to them.
+Notifications support enqueuing and are presented in a FIFO order.
+Future features will include styling your notifications and the ability to show or hide the status bar.
 
+## Example
 Our example covers extending Notify to create a presentable success and error based notification.
 
-Success:
+## Default:
+
+![Alt text](/default.png?raw=true "Default Notification" =250px)
+
+## Success:
 
 ![Alt text](/success.png?raw=true "Success Notification" =250x)
 
-Error:
+## Error:
 
 ![Alt text](/error.png?raw=true "Error Notification" =250x)
 

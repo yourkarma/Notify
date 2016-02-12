@@ -22,17 +22,42 @@ class NotifyThemeProvider: Notify.ThemeProvider {
     }
     
     func labelForNotification(notification: Notification) -> UILabel {
-        let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 12.0)
-        label.textColor = .whiteColor()
-        return label
+
+        switch notification.level {
+        case .Success:
+            let label = UILabel()
+            label.font = UIFont(name: "HelveticaNeue", size: 14.0)
+            label.textColor = .whiteColor()
+            return label
+        case .Error:
+            let label = UILabel()
+            label.font = UIFont(name: "HelveticaNeue", size: 16.0)
+            label.textColor = .whiteColor()
+            return label
+        
+        case .Default: // example of iPhone style notification banner
+            let label = UILabel()
+            label.font = UIFont(name: "HelveticaNeue", size: 12.0)
+            label.textColor = .whiteColor()
+            
+            let pulseAnimation = CABasicAnimation(keyPath: "opacity")
+            pulseAnimation.duration = 2
+            pulseAnimation.fromValue = 0.2
+            pulseAnimation.toValue = 1
+            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            pulseAnimation.autoreverses = true
+            pulseAnimation.repeatCount = FLT_MAX
+            label.layer.addAnimation(pulseAnimation, forKey: nil)
+            return label
+        }
+        
     }
     
     func backgroundColorForNotification(notification: Notification) -> UIColor {
         switch notification.level {
         case .Success: return Color.Green
         case .Error: return Color.Red
-        case .Default: return Color.Orange
+        case .Default: return Color.Blue
         }
     }
     

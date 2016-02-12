@@ -215,7 +215,7 @@ public class Presenter: PresenterType {
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-15-[button]-10-|", options: [], metrics: nil, views: viewsWithButton))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: viewsWithButton))
         } else {
-            let verticalLabelContraints = shouldShowImage ? "V:|-10-[label]-10-|" : "V:|-30-[label]-10-|"
+            let verticalLabelContraints = shouldShowImage ? "V:|-10-[label]-10-|" : "V:|-20-[label]-6-|"
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalLabelContraints, options: [], metrics: nil, views: views))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: views))
         }

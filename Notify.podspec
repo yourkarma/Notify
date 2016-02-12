@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = "Notify"
-  s.version          = "0.1.7"
-  s.summary          = "Notify is a presentation layer for displaying notifications within your app"
+  s.version          = "0.1.8"
+  s.summary          = "Notify is a presentation layer for displaying notifications within your app. Notify has basic support for custom styled notification banners."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -24,7 +24,7 @@ Future features will include styling your notifications and the ability to show 
                        DESC
 
   s.homepage         = "https://github.com/yourkarma/Notify"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.screenshots      = "https://github.com/yourkarma/Notify/raw/master/success.png?raw=true%20%22Success%20Notification%22%20=250x", "https://github.com/yourkarma/Notify/blob/master/error.png?raw=true%20%22Error%20Notification%22%20=250x"
   s.license          = 'MIT'
   s.author           = { "asowers" => "andrew.sowers@yourkarma.com", "klaaspieter" => "kpa@annema.me" }
   s.source           = { :git => "https://github.com/yourkarma/Notify.git", :tag => s.version.to_s }
