@@ -15,6 +15,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDismissNotification", name: "didDismissNotiftyNotification", object: nil)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +34,13 @@ class ViewController: UIViewController {
         print("Did the thing")
     }
     
+    @IBAction func didTapManualDismissNotification(sender: AnyObject) {
+        self.manualDismissNotification()
+    }
     
+    func manualDismissNotification() {
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "HidePresentedNotification", object: nil))
+    }
 
 }
 

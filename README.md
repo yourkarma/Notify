@@ -7,7 +7,8 @@
 The purpose of Notify is to present addressable notification to your users within your app.
 Examples might include asking users to address permissions or whether they've seen some information relevant to them.
 Notifications support enqueuing and are presented in a FIFO order.
-Future features will include styling your notifications and the ability to show or hide the status bar.
+Basic features include styling your notifications, hiding notifications without user interaction with an NSNotificationCenter notification, and the ability to show or hide the status bar.
+
 
 ## Example
 Our example covers extending Notify to create a presentable success and error based notification.

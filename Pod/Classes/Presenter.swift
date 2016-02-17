@@ -25,6 +25,7 @@ public class Presenter: PresenterType {
 
     public init(themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hidePresentedNotification", name: "HidePresentedNotification", object: nil)
     }
 
     public func present(notification: Notification, showStatusBar: Bool = false) {
@@ -109,7 +110,7 @@ public class Presenter: PresenterType {
         }
     }
 
-    func hidePresentedNotification() {
+    @objc func hidePresentedNotification() {
         if let presentedNotification = Presenter.presentedNotification {
             let view = presentedNotification.view
             let window = presentedNotification.window
@@ -263,5 +264,7 @@ public class Presenter: PresenterType {
         return window
     }
     
-    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }

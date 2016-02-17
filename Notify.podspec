@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Notify"
-  s.version          = "0.1.9"
+  s.version          = "0.2.0"
   s.summary          = "Notify is a presentation layer for displaying notifications within your app."
 
 # This description is used to generate tags and improve search results.
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
 The purpose of notify is to present addressable notification to your users within your app.
 Examples might include asking users to address permissions or whether they've seen some information relevant to them.
 Notifications support enqueuing and are presented in a FIFO order.
-Future features will include styling your notifications and the ability to show or hide the status bar.
+Basic features include styling your notifications and the ability to show or hide the status bar.
                        DESC
 
   s.homepage         = "https://github.com/yourkarma/Notify"

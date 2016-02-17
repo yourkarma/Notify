@@ -16,7 +16,20 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYQ-iO-Fgs">
+                                <rect key="frame" x="205" y="285" width="190" height="30"/>
+                                <state key="normal" title="Manual Dismiss Notification"/>
+                                <connections>
+                                    <action selector="didTapManualDismissNotification:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="3jt-W1-CJH"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="YT9-8Z-K0M"/>
+                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="qb7-Pr-hjJ"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
