@@ -9,7 +9,7 @@ target 'Notify_Tests', :exclusive => true do
   pod 'Notify', :path => '../'
 
   pod 'Quick', '~> 0.8.0'
-  pod 'Nimble', '3.0.0'
+  pod 'Nimble'
   pod 'FBSnapshotTestCase'
   pod 'Nimble-Snapshots'
 end

@@ -25,7 +25,7 @@ public class Presenter: PresenterType {
 
     public init(themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hidePresentedNotification", name: "HidePresentedNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Presenter.hidePresentedNotification), name: "HidePresentedNotification", object: nil)
     }
 
     public func present(notification: Notification, showStatusBar: Bool = false) {
@@ -166,7 +166,7 @@ public class Presenter: PresenterType {
         buttons.forEach { (button) -> () in
             view.addSubview(button)
             button.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
-            button.addTarget(self, action: "handleAction:", forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(Presenter.handleAction(_:)), forControlEvents: .TouchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -181,7 +181,7 @@ public class Presenter: PresenterType {
         imageView.setContentHuggingPriority(252, forAxis: .Vertical)
         label.setContentHuggingPriority(251, forAxis: .Horizontal)
         
-        let horizontalLabelContraints = shouldShowImage ? "H:|-15-[icon]-10-[label]-15-|" : "H:|-(>=15)-[label]-(>=15)-|"
+        let horizontalLabelContraints = shouldShowImage ? "H:|-16-[icon]-16-[label]->=16-|" : "H:|->=16-[label]->=16-|"
         
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(horizontalLabelContraints, options: [], metrics: nil, views: views))
         
@@ -213,18 +213,15 @@ public class Presenter: PresenterType {
         // Constrain the vertical axis
         if let button = buttons.first {
             let viewsWithButton = ["icon": imageView, "label": label, "button": button]
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-15-[button]-10-|", options: [], metrics: nil, views: viewsWithButton))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: viewsWithButton))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-10-[button]-16-|", options: [], metrics: nil, views: viewsWithButton))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[icon]->=16-|", options: [], metrics: nil, views: viewsWithButton))
         } else {
             let verticalLabelContraints = shouldShowImage ? "V:|-10-[label]-10-|" : "V:|-20-[label]-6-|"
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalLabelContraints, options: [], metrics: nil, views: views))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10@251-[icon]-10@251-|", options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[icon]->=16-|", options: [], metrics: nil, views: views))
         }
 
-        // Constrain label.top to icon.top
-        view.addConstraint(NSLayoutConstraint(item: label, attribute: .Top, relatedBy: .Equal, toItem: imageView, attribute: .Top, multiplier: 1.0, constant: 0.0))
-
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "notificationTapped:"))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Presenter.notificationTapped(_:))))
 
         return view
     }

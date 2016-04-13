@@ -26,12 +26,12 @@ class NotifyThemeProvider: Notify.ThemeProvider {
         switch notification.level {
         case .Success:
             let label = UILabel()
-            label.font = UIFont(name: "HelveticaNeue", size: 14.0)
+            label.font = UIFont(name: "HelveticaNeue", size: 17.0)
             label.textColor = .whiteColor()
             return label
         case .Error:
             let label = UILabel()
-            label.font = UIFont(name: "HelveticaNeue", size: 16.0)
+            label.font = UIFont(name: "HelveticaNeue", size: 17.0)
             label.textColor = .whiteColor()
             return label
         

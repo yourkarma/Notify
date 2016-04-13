@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -18,22 +18,108 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYQ-iO-Fgs">
-                                <rect key="frame" x="205" y="285" width="190" height="30"/>
-                                <state key="normal" title="Manual Dismiss Notification"/>
+                                <rect key="frame" x="0.0" y="528" width="600" height="72"/>
+                                <color key="backgroundColor" red="0.97647058819999999" green="0.27450980390000002" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="dXd-hr-ZNu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Dismiss notification">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="didTapManualDismissNotification:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="3jt-W1-CJH"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyM-o0-iXr">
+                                <rect key="frame" x="172" y="121" width="58" height="30"/>
+                                <state key="normal" title="Success">
+                                    <color key="titleColor" red="0.019607843137254902" green="0.52549019607843139" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="presentSuccessNotification:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mRf-Ia-Oga"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Hello, Karma" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="spB-4N-W5R">
+                                <rect key="frame" x="172" y="220" width="256" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="Cuo-mo-fE6"/>
+                                    <constraint firstAttribute="width" constant="256" id="rUZ-Ri-YIc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W21-mN-fPi">
+                                <rect key="frame" x="283" y="121" width="34" height="30"/>
+                                <state key="normal" title="Error">
+                                    <color key="titleColor" red="0.98823529409999999" green="0.2666666667" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="presentErrorNotification:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ZF6-F9-So8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Lz-H4-MvR">
+                                <rect key="frame" x="378" y="121" width="50" height="30"/>
+                                <state key="normal" title="Default"/>
+                                <connections>
+                                    <action selector="presentDefaultNotification:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="EXx-s5-1wR"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTIFICATION TYPE:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OA3-Mi-A2j">
+                                <rect key="frame" x="172" y="84" width="164" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTIFICATION BODY:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OkS-ge-bYM">
+                                <rect key="frame" x="172" y="183" width="167" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.047058823530000002" green="0.1843137255" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="YT9-8Z-K0M"/>
-                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="qb7-Pr-hjJ"/>
+                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="4yl-2r-8hT"/>
+                            <constraint firstItem="W21-mN-fPi" firstAttribute="bottom" secondItem="RyM-o0-iXr" secondAttribute="bottom" id="BP9-9M-arZ"/>
+                            <constraint firstItem="3Lz-H4-MvR" firstAttribute="bottom" secondItem="RyM-o0-iXr" secondAttribute="bottom" id="D2X-tn-f5a"/>
+                            <constraint firstItem="spB-4N-W5R" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="HKf-ir-fb1"/>
+                            <constraint firstItem="pYQ-iO-Fgs" firstAttribute="top" secondItem="spB-4N-W5R" secondAttribute="bottom" constant="32" id="Lo3-ts-ZEK"/>
+                            <constraint firstItem="OkS-ge-bYM" firstAttribute="leading" secondItem="spB-4N-W5R" secondAttribute="leading" id="dcy-jy-c4a"/>
+                            <constraint firstItem="OA3-Mi-A2j" firstAttribute="leading" secondItem="RyM-o0-iXr" secondAttribute="leading" id="dgT-mT-CDu"/>
+                            <constraint firstItem="spB-4N-W5R" firstAttribute="top" secondItem="OkS-ge-bYM" secondAttribute="bottom" constant="16" id="dmi-xd-bj7"/>
+                            <constraint firstItem="RyM-o0-iXr" firstAttribute="leading" secondItem="OkS-ge-bYM" secondAttribute="leading" id="gax-wa-0jk"/>
+                            <constraint firstItem="W21-mN-fPi" firstAttribute="leading" secondItem="RyM-o0-iXr" secondAttribute="trailing" constant="53" id="pLp-ZC-hzE"/>
+                            <constraint firstItem="W21-mN-fPi" firstAttribute="top" secondItem="OA3-Mi-A2j" secondAttribute="bottom" constant="16" id="rTh-6U-cfH"/>
+                            <constraint firstItem="OkS-ge-bYM" firstAttribute="top" secondItem="RyM-o0-iXr" secondAttribute="bottom" constant="32" id="rvi-ya-Ohi"/>
+                            <constraint firstItem="3Lz-H4-MvR" firstAttribute="leading" secondItem="W21-mN-fPi" secondAttribute="trailing" constant="61" id="t0S-tM-UIj"/>
+                            <constraint firstItem="OA3-Mi-A2j" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="64" id="vhL-hD-VXI"/>
+                            <constraint firstAttribute="trailing" secondItem="pYQ-iO-Fgs" secondAttribute="trailing" id="xjr-UB-Har"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="pYQ-iO-Fgs" secondAttribute="bottom" id="xwJ-F4-1xh"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Lo3-ts-ZEK"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="XOM-hH-FUU" appends="YES" id="zZM-ow-y5z"/>
+                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="notificationBodyTextView" destination="spB-4N-W5R" id="8UN-5j-Rye"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="XOM-hH-FUU">
+                    <connections>
+                        <action selector="dismissKeyboard:" destination="vXZ-lx-hvc" id="N4H-O4-cLt"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
+            <point key="canvasLocation" x="389" y="278"/>
         </scene>
     </scenes>
 </document>

@@ -11,10 +11,12 @@ import Notify
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var notificationBodyTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDismissNotification", name: "didDismissNotiftyNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.didDismissNotification), name: "didDismissNotiftyNotification", object: nil)
         
     }
 
@@ -25,21 +27,40 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        //self.presentNotification(Notification(level: .Success, message: "This is a successful test notification"))
-        //self.presentNotification(Notification(level: .Error, message: "This is a error test notification"))
-        self.presentNotification(Notification(level: .Default, message: "This is a default test notification"), delay: 0, withStatusBar: true)
     }
     
     func didDismissNotification() {
-        print("Did the thing")
+        print("It did the thing")
     }
+    
+    @IBAction func presentSuccessNotification(sender: AnyObject) {
+        self.presentNotification(Notification(level: .Success, message: self.notificationBodyTextView.text))
+    }
+    
+    @IBAction func presentErrorNotification(sender: AnyObject) {
+        self.presentNotification(Notification(level: .Error, message: self.notificationBodyTextView.text))
+    }
+    
+    @IBAction func presentDefaultNotification(sender: AnyObject) {
+        self.presentNotification(Notification(level: .Default, message: self.notificationBodyTextView.text), withStatusBar: true)
+    }
+    
     
     @IBAction func didTapManualDismissNotification(sender: AnyObject) {
         self.manualDismissNotification()
     }
     
+    @IBAction func dismissKeyboard(sender: AnyObject) {
+        self.notificationBodyTextView.resignFirstResponder()
+    }
+    
     func manualDismissNotification() {
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "HidePresentedNotification", object: nil))
+    }
+    
+    deinit {
+        // make sure to remove observers when they're deallocated
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
 }

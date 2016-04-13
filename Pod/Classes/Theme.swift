@@ -12,7 +12,7 @@ public struct Color {
     public static let DarkBlue = UIColor(red: 14.0 / 255.0, green: 47.0 / 255.0, blue: 60.0 / 255.0, alpha: 1.0)
     public static let LightBlue = UIColor(red: 199.0 / 255.0, green: 213.0 / 255.0, blue: 217.0 / 255.0, alpha: 1.0)
 
-    public static let Green = UIColor(red: 89.0 / 255.0, green: 199.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
+    public static let Green = UIColor(red: 0.0 / 255.0, green: 147.0 / 255.0, blue: 62.0 / 255.0, alpha: 1.0)
 
     public static let Black = UIColor(red: 16.0 / 255.0, green: 24.0 / 255.0, blue: 32.0 / 255.0, alpha: 1.0)
 
