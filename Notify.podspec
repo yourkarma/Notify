@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Notify"
-  s.version          = "0.2.0"
+  s.version          = "0.2.1"
   s.summary          = "Notify is a presentation layer for displaying notifications within your app."
 
 # This description is used to generate tags and improve search results.

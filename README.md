@@ -11,19 +11,19 @@ Basic features include styling your notifications, hiding notifications without 
 
 
 ## Example
-Our example covers extending Notify to create a presentable success and error based notification.
+The Pod example covers extending Notify to create a presentable success and error based notification.
 
 ## Default:
 
-![Alt text](/default.png?raw=true "Default Notification" =250px)
+![Alt text](https://github.com/yourkarma/Notify/blob/master/default.png?raw=true "Default Notification" =250px)
 
 ## Success:
 
-![Alt text](/success.png?raw=true "Success Notification" =250x)
+![Alt text](https://github.com/yourkarma/Notify/blob/master/success.png?raw=true "Success Notification" =250x)
 
 ## Error:
 
-![Alt text](/error.png?raw=true "Error Notification" =250x)
+![Alt text](https://github.com/yourkarma/Notify/blob/master/error.png?raw=true "Error Notification" =250x)
 
 ## Usage
 
