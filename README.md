@@ -1,8 +1,10 @@
 # Notify
 
 [![Version](https://img.shields.io/cocoapods/v/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
+[![Swift](https://img.shields.io/badge/Swift-3.0-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
 [![Platform](https://img.shields.io/cocoapods/p/Notify.svg?style=flat)](http://cocoapods.org/pods/Notify)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 The purpose of Notify is to present addressable notification to your users within your app.
 Examples might include asking users to address permissions or whether they've seen some information relevant to them.
@@ -39,6 +41,14 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod "Notify"
 ```
+
+Notify is also available via [Carthage](https://github.com/Carthage/Carthage). To install
+it, simply add the following line to your Cartfile:
+
+```
+github "yourkarma/notify"
+```
+
 
 ## Author
 

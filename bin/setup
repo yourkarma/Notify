@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if ! command pod --version > /dev/null; then
+  printf 'Cocoapods is not installed.\n'
+  printf 'See https://github.com/Cocoapods/Cocoapods for install instructions.\n'
+  exit 1
+fi
+
+pod install
