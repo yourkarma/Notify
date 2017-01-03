@@ -1,6 +1,6 @@
 {
   "name": "Notify",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "summary": "Notify is a presentation layer for displaying notifications within your app.",
   "description": "The purpose of notify is to present addressable notification to your users within your app.\nExamples might include asking users to address permissions or whether they've seen some information relevant to them.\nNotifications support enqueuing and are presented in a FIFO order.\nBasic features include styling your notifications and the ability to show or hide the status bar.",
   "homepage": "https://github.com/yourkarma/Notify",
@@ -15,7 +15,7 @@
   },
   "source": {
     "git": "https://github.com/yourkarma/Notify.git",
-    "tag": "0.2.0"
+    "tag": "0.2.1"
   },
   "social_media_url": "https://twitter.com/andrewsowers",
   "platforms": {

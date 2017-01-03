@@ -8,37 +8,37 @@
 
 import Notify
 
-func notify(notification: Notification, withStatusBar: Bool = false) {
+func notify(_ notification: NotifyNotification, withStatusBar: Bool = false) {
     Notifier(themeProvider: NotifyThemeProvider()).notify(notification, withStatusBar: withStatusBar)
 }
 
 class NotifyThemeProvider: Notify.ThemeProvider {
-    func iconForNotification(notification: Notification) -> UIImage? {
+    func iconForNotification(_ notification: NotifyNotification) -> UIImage? {
         switch notification.level {
-        case .Success: return UIImage(named: "notification-icon-success")!
-        case .Error: return UIImage(named: "notification-icon-error")!
-        case .Default: return nil
+        case .success: return UIImage(named: "notification-icon-success")!
+        case .error: return UIImage(named: "notification-icon-error")!
+        case .default: return nil
         }
     }
     
-    func labelForNotification(notification: Notification) -> UILabel {
+    func labelForNotification(_ notification: NotifyNotification) -> UILabel {
 
         switch notification.level {
-        case .Success:
+        case .success:
             let label = UILabel()
             label.font = UIFont(name: "HelveticaNeue", size: 17.0)
-            label.textColor = .whiteColor()
+            label.textColor = .white
             return label
-        case .Error:
+        case .error:
             let label = UILabel()
             label.font = UIFont(name: "HelveticaNeue", size: 17.0)
-            label.textColor = .whiteColor()
+            label.textColor = .white
             return label
         
-        case .Default: // example of iPhone style notification banner
+        case .default: // example of iPhone style notification banner
             let label = UILabel()
             label.font = UIFont(name: "HelveticaNeue", size: 12.0)
-            label.textColor = .whiteColor()
+            label.textColor = .white
             
             let pulseAnimation = CABasicAnimation(keyPath: "opacity")
             pulseAnimation.duration = 2
@@ -47,55 +47,55 @@ class NotifyThemeProvider: Notify.ThemeProvider {
             pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             pulseAnimation.autoreverses = true
             pulseAnimation.repeatCount = FLT_MAX
-            label.layer.addAnimation(pulseAnimation, forKey: nil)
+            label.layer.add(pulseAnimation, forKey: nil)
             return label
         }
         
     }
     
-    func backgroundColorForNotification(notification: Notification) -> UIColor {
+    func backgroundColorForNotification(_ notification: NotifyNotification) -> UIColor {
         switch notification.level {
-        case .Success: return Color.Green
-        case .Error: return Color.Red
-        case .Default: return Color.Blue
+        case .success: return Color.Green
+        case .error: return Color.Red
+        case .default: return Color.Blue
         }
     }
     
-    func buttonForNotification(notification: Notification, action: Notification.Action) -> UIButton {
+    func buttonForNotification(_ notification: NotifyNotification, action: NotifyNotification.Action) -> UIButton {
         let button = UIButton()
         button.layer.cornerRadius = 4.0
-        button.layer.borderColor = UIColor.clearColor().CGColor
+        button.layer.borderColor = UIColor.clear.cgColor
         button.layer.borderWidth = 1.0
         button.layer.masksToBounds = true
         button.adjustsImageWhenHighlighted = true
         button.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 12.0)
-        button.addConstraint(NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 36.0))
-        button.setBackgroundImage(imageWithSolidColor(Color.RedDarkened), forState: .Normal)
+        button.addConstraint(NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 36.0))
+        button.setBackgroundImage(imageWithSolidColor(Color.RedDarkened), for: .normal)
         return button
     }
 }
 
 public protocol NotifierType {
-    func notify(notification: Notification, delay: NSTimeInterval?)
-    func notifyWithStatusBar(notification: Notification,  delay: NSTimeInterval?, withStatusBar: Bool)
+    func notify(_ notification: NotifyNotification, delay: TimeInterval?)
+    func notifyWithStatusBar(_ notification: NotifyNotification,  delay: TimeInterval?, withStatusBar: Bool)
 }
 
 extension Notifier: NotifierType {
-    public func notify(notification: Notification, delay: NSTimeInterval? = nil) {
+    public func notify(_ notification: NotifyNotification, delay: TimeInterval? = nil) {
         if let delay = delay {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                Notify_Example.notify(notification, withStatusBar: false)
-            }
+			DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+				Notify_Example.notify(notification, withStatusBar: false)
+			}
         } else {
             Notify_Example.notify(notification, withStatusBar: false)
         }
     }
     
-    public func notifyWithStatusBar(notification: Notification,  delay: NSTimeInterval? = nil, withStatusBar: Bool = false) {
+    public func notifyWithStatusBar(_ notification: NotifyNotification,  delay: TimeInterval? = nil, withStatusBar: Bool = false) {
         if let delay = delay {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                Notify_Example.notify(notification, withStatusBar: withStatusBar)
-            }
+			DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+				Notify_Example.notify(notification, withStatusBar: withStatusBar)
+			}
         } else {
             Notify_Example.notify(notification, withStatusBar: withStatusBar)
         }
@@ -115,11 +115,11 @@ extension UIViewController {
             }
         }
         set {
-            objc_setAssociatedObject(self, notifierPropertyKey, newValue as? AnyObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, notifierPropertyKey, newValue as AnyObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
-    func presentNotification(notification: Notification, delay: NSTimeInterval? = nil, withStatusBar: Bool = false) {
+    func presentNotification(_ notification: NotifyNotification, delay: TimeInterval? = nil, withStatusBar: Bool = false) {
         self.notifier.notifyWithStatusBar(notification, delay: delay, withStatusBar: withStatusBar)
     }
 }

@@ -1,17 +1,17 @@
 import UIKit
 
 class NotifyViewController: UIViewController {
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIApplication.sharedApplication().statusBarStyle
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIApplication.shared.statusBarStyle
     }
 
-    override func prefersStatusBarHidden() -> Bool {
-        return UIApplication.sharedApplication().statusBarHidden
+    override var prefersStatusBarHidden : Bool {
+        return UIApplication.shared.isStatusBarHidden
     }
 
     override func loadView() {
         super.loadView()
         self.view = UIView()
-        self.view.hidden = true
+        self.view.isHidden = true
     }
 }

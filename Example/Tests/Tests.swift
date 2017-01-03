@@ -9,11 +9,11 @@ class TableOfContentsSpec: QuickSpec {
         context("here be tests") {
             
             it("can notify about errors") {
-                expect(Notification(level: .Error, message: "Error")) == Notification(level: .Error, message: "Error")
+                expect(NotifyNotification(level: .error, message: "Error")) == NotifyNotification(level: .error, message: "Error")
             }
             
             it("can notify about successes") {
-                expect(Notification(level: .Success, message: "Success")) == Notification(level: .Success, message: "Success")
+                expect(NotifyNotification(level: .success, message: "Success")) == NotifyNotification(level: .success, message: "Success")
             }
         }
     }

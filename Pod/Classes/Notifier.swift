@@ -14,14 +14,14 @@ public struct Notifier {
         self.init(themeProvider: themeProvider, presenter: Presenter(themeProvider: themeProvider))
     }
 
-    public func notify(notification: Notification, withStatusBar: Bool = false) {
+    public func notify(_ notification: NotifyNotification, withStatusBar: Bool = false) {
         self.presenter.present(notification, showStatusBar: withStatusBar)
     }
 }
 
 public protocol ThemeProvider {
-    func iconForNotification(notification: Notification) -> UIImage?
-    func labelForNotification(notification: Notification) -> UILabel
-    func backgroundColorForNotification(notification: Notification) -> UIColor
-    func buttonForNotification(notification: Notification, action: Notification.Action) -> UIButton
+    func iconForNotification(_ notification: NotifyNotification) -> UIImage?
+    func labelForNotification(_ notification: NotifyNotification) -> UILabel
+    func backgroundColorForNotification(_ notification: NotifyNotification) -> UIColor
+    func buttonForNotification(_ notification: NotifyNotification, action: NotifyNotification.Action) -> UIButton
 }
