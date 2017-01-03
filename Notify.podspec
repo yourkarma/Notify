@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Notify"
-  s.version          = "0.2.1"
+  s.version          = "0.3.0"
   s.summary          = "Notify is a presentation layer for displaying notifications within your app."
 
 # This description is used to generate tags and improve search results.
@@ -30,7 +30,7 @@ Basic features include styling your notifications and the ability to show or hid
   s.source           = { :git => "https://github.com/yourkarma/Notify.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/andrewsowers'
 
-  s.platform     = :ios, '8.0'
+  s.platform     = :ios, '9.3'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
