@@ -4,31 +4,31 @@ struct PresentedNotification {
     let window: UIWindow
     let view: UIView
     let dimView: UIView
-    let notification: Notification
+    let notification: NotifyNotification
     let presenter: Presenter
 
-    let presentedAt: NSTimeInterval
+    let presentedAt: TimeInterval
 }
 
 public protocol PresenterType {
-    func present(notification: Notification, showStatusBar: Bool)
+    func present(_ notification: NotifyNotification, showStatusBar: Bool)
 }
 
-public class Presenter: PresenterType {
+open class Presenter: PresenterType {
     
     static var presentedNotification: PresentedNotification? = nil
-    static var notificationQueue: [(Notification, Bool)] = []
+    static var notificationQueue: [(NotifyNotification, Bool)] = []
     
-    var dismissAfter: NSTimeInterval?
+    var dismissAfter: TimeInterval?
 
     let themeProvider: ThemeProvider
 
     public init(themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Presenter.hidePresentedNotification), name: "HidePresentedNotification", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(Presenter.hidePresentedNotification), name: NSNotification.Name(rawValue: "HidePresentedNotification"), object: nil)
     }
 
-    public func present(notification: Notification, showStatusBar: Bool = false) {
+    open func present(_ notification: NotifyNotification, showStatusBar: Bool = false) {
         if Presenter.presentedNotification == nil {
             self.makeNotificationVisible(notification, statusBarHeight: showStatusBar ? 1 : 0)
         } else {
@@ -36,14 +36,14 @@ public class Presenter: PresenterType {
         }
     }
 
-    func makeNotificationVisible(notification: Notification, statusBarHeight: CGFloat = 0) {
+    func makeNotificationVisible(_ notification: NotifyNotification, statusBarHeight: CGFloat = 0) {
         
         let window = self.makeNotificationWindowWithStatusBarHeight(statusBarHeight)
         let view = self.makeNotificationViewForNotification(notification)
         window.addSubview(view)
 
         let dimView = UIView()
-        dimView.backgroundColor = UIColor.blackColor()
+        dimView.backgroundColor = UIColor.black
         dimView.alpha = 0.0
         dimView.translatesAutoresizingMaskIntoConstraints = false
         window.insertSubview(dimView, belowSubview: view)
@@ -56,25 +56,25 @@ public class Presenter: PresenterType {
         // the window is deallocated and thus not visible anymore.
         // In other words, if for some reason the cleanup logic fails, this ensures we still only
         // ever have one window visible.
-        Presenter.presentedNotification = PresentedNotification(window: window, view: view, dimView: dimView, notification: notification, presenter: self, presentedAt: NSDate().timeIntervalSinceReferenceDate)
+        Presenter.presentedNotification = PresentedNotification(window: window, view: view, dimView: dimView, notification: notification, presenter: self, presentedAt: Date().timeIntervalSinceReferenceDate)
 
         // Constrain the notification to the top of the view
         let views = ["notification": view, "dim": dimView]
-        window.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[notification]|", options: [], metrics: nil, views: views))
-        window.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[dim]|", options: [], metrics: nil, views: views))
+        window.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[notification]|", options: [], metrics: nil, views: views))
+        window.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[dim]|", options: [], metrics: nil, views: views))
 
-        let offScreenTopConstraint = NSLayoutConstraint(item: view, attribute: .Bottom, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 2.0, constant: 0.0)
+        let offScreenTopConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: window, attribute: .top, multiplier: 2.0, constant: 0.0)
         offScreenTopConstraint.identifier = "offScreenTopConstraint"
         window.addConstraint(offScreenTopConstraint)
 
-        let onscreenTopConstraint = NSLayoutConstraint(item: view, attribute: .Top, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 2.0, constant: 0.0)
+        let onscreenTopConstraint = NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: window, attribute: .top, multiplier: 2.0, constant: 0.0)
         onscreenTopConstraint.identifier = "onscreenTopConstraint"
 
-        window.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[dim]|", options: [], metrics: nil, views: views))
+        window.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[dim]|", options: [], metrics: nil, views: views))
 
         window.layoutIfNeeded()
 
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             window.removeConstraint(offScreenTopConstraint)
             window.addConstraint(onscreenTopConstraint)
 
@@ -86,18 +86,18 @@ public class Presenter: PresenterType {
 
             window.layoutIfNeeded()
         })
-        window.hidden = false
+        window.isHidden = false
 
         if (!preventsUserInteraction) {
             window.touchCallback = {
                 if let presentedAt = Presenter.presentedNotification?.presentedAt {
 
-                    if let timeInterval: NSTimeInterval = self.dismissAfter {
-                        let elapsedSeconds = NSDate().timeIntervalSinceReferenceDate - presentedAt
-                        let minimumSecondsNotificationShouldBeVisible: NSTimeInterval = timeInterval
+                    if let timeInterval: TimeInterval = self.dismissAfter {
+                        let elapsedSeconds = Date().timeIntervalSinceReferenceDate - presentedAt
+                        let minimumSecondsNotificationShouldBeVisible: TimeInterval = timeInterval
                         
                         let waitFor = minimumSecondsNotificationShouldBeVisible - elapsedSeconds
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(waitFor * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(waitFor * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
                             self.hidePresentedNotification()
                         }
                     }
@@ -116,23 +116,23 @@ public class Presenter: PresenterType {
             let window = presentedNotification.window
             let dimView = presentedNotification.dimView
 
-            UIView.animateWithDuration(0.2, animations: {
-                view.transform = CGAffineTransformMakeTranslation(0.0, -view.frame.height)
+            UIView.animate(withDuration: 0.2, animations: {
+                view.transform = CGAffineTransform(translationX: 0.0, y: -view.frame.height)
                 dimView.alpha = 0.0
             }, completion: { _ in
-                window.hidden = true
+                window.isHidden = true
                 Presenter.presentedNotification = nil
-                NSNotificationCenter.defaultCenter().postNotificationName("didDismissNotiftyNotification", object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "didDismissNotiftyNotification"), object: nil, userInfo: nil)
                 
                 if Presenter.notificationQueue.count > 0 {
-                    let notification = Presenter.notificationQueue.removeAtIndex(0)
+                    let notification = Presenter.notificationQueue.remove(at: 0)
                     self.present(notification.0, showStatusBar: notification.1)
                 }
             })
         }
     }
 
-    @objc func notificationTapped(gestureRecognizer: UITapGestureRecognizer) {
+    @objc func notificationTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         if let actions = Presenter.presentedNotification?.notification.actions {
             if actions.count <= 0 {
                 self.hidePresentedNotification()
@@ -140,7 +140,7 @@ public class Presenter: PresenterType {
         }
     }
 
-    func makeNotificationViewForNotification(notification: Notification) -> UIView {
+    func makeNotificationViewForNotification(_ notification: NotifyNotification) -> UIView {
         let view = UIView()
 
         view.backgroundColor = self.themeProvider.backgroundColorForNotification(notification)
@@ -166,7 +166,7 @@ public class Presenter: PresenterType {
         buttons.forEach { (button) -> () in
             view.addSubview(button)
             button.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
-            button.addTarget(self, action: #selector(Presenter.handleAction(_:)), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(Presenter.handleAction(_:)), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -177,34 +177,34 @@ public class Presenter: PresenterType {
         let views = ["icon": imageView, "label": label]
 
         // Constrain the horizontal axis
-        imageView.setContentHuggingPriority(252, forAxis: .Horizontal)
-        imageView.setContentHuggingPriority(252, forAxis: .Vertical)
-        label.setContentHuggingPriority(251, forAxis: .Horizontal)
+        imageView.setContentHuggingPriority(252, for: .horizontal)
+        imageView.setContentHuggingPriority(252, for: .vertical)
+        label.setContentHuggingPriority(251, for: .horizontal)
         
         let horizontalLabelContraints = shouldShowImage ? "H:|-16-[icon]-16-[label]->=16-|" : "H:|->=16-[label]->=16-|"
         
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(horizontalLabelContraints, options: [], metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: horizontalLabelContraints, options: [], metrics: nil, views: views))
         
         if !shouldShowImage {
-            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
+            view.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1.0, constant: 0.0))
         }
         
 
         var previousButton: UIButton? = nil
-        for (index, button) in buttons.enumerate() {
+        for (index, button) in buttons.enumerated() {
             if previousButton == nil {
-                view.addConstraint(NSLayoutConstraint(item: button, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1.0, constant: 5.0))
+                view.addConstraint(NSLayoutConstraint(item: button, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 5.0))
             } else if index < notification.actions.endIndex {
-                view.addConstraint(NSLayoutConstraint(item: button, attribute: .Leading, relatedBy: .Equal, toItem: previousButton, attribute: .Trailing, multiplier: 1.0, constant: 5.0))
-                view.addConstraint(NSLayoutConstraint(item: button, attribute: .Baseline, relatedBy: .Equal, toItem: previousButton, attribute: .Baseline, multiplier: 1.0, constant: 0.0))
+                view.addConstraint(NSLayoutConstraint(item: button, attribute: .leading, relatedBy: .equal, toItem: previousButton, attribute: .trailing, multiplier: 1.0, constant: 5.0))
+                view.addConstraint(NSLayoutConstraint(item: button, attribute: .lastBaseline, relatedBy: .equal, toItem: previousButton, attribute: .lastBaseline, multiplier: 1.0, constant: 0.0))
 
-                let widthConstraint = NSLayoutConstraint(item: button, attribute: .Width, relatedBy: .Equal, toItem: previousButton, attribute: .Width, multiplier: 1.0, constant: previousButton?.frame.width ?? 0.0)
+                let widthConstraint = NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: previousButton, attribute: .width, multiplier: 1.0, constant: previousButton?.frame.width ?? 0.0)
                 widthConstraint.priority = UILayoutPriorityDefaultLow
                 view.addConstraint(widthConstraint)
             }
 
             if buttons.last == button {
-                view.addConstraint(NSLayoutConstraint(item: view, attribute: .Trailing, relatedBy: .Equal, toItem: button, attribute: .Trailing, multiplier: 1.0, constant: 5.0))
+                view.addConstraint(NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: button, attribute: .trailing, multiplier: 1.0, constant: 5.0))
             }
 
             previousButton = button
@@ -213,12 +213,12 @@ public class Presenter: PresenterType {
         // Constrain the vertical axis
         if let button = buttons.first {
             let viewsWithButton = ["icon": imageView, "label": label, "button": button]
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[label]-10-[button]-16-|", options: [], metrics: nil, views: viewsWithButton))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[icon]->=16-|", options: [], metrics: nil, views: viewsWithButton))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[label]-10-[button]-16-|", options: [], metrics: nil, views: viewsWithButton))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[icon]->=16-|", options: [], metrics: nil, views: viewsWithButton))
         } else {
             let verticalLabelContraints = shouldShowImage ? "V:|-10-[label]-10-|" : "V:|-20-[label]-6-|"
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalLabelContraints, options: [], metrics: nil, views: views))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-16-[icon]->=16-|", options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: verticalLabelContraints, options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[icon]->=16-|", options: [], metrics: nil, views: views))
         }
 
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Presenter.notificationTapped(_:))))
@@ -226,18 +226,18 @@ public class Presenter: PresenterType {
         return view
     }
 
-    func buttonsForNotification(notification: Notification) -> [UIButton] {
+    func buttonsForNotification(_ notification: NotifyNotification) -> [UIButton] {
         var buttons: [UIButton] = []
-        for (index, action) in notification.actions.enumerate() {
+        for (index, action) in notification.actions.enumerated() {
             let button = self.themeProvider.buttonForNotification(notification, action: action)
-            button.setTitle(action.title, forState: .Normal)
+            button.setTitle(action.title, for: UIControlState())
             button.tag = index
             buttons.append(button)
         }
         return buttons
     }
 
-    @objc func handleAction(sender: UIButton) {
+    @objc func handleAction(_ sender: UIButton) {
         if let presented = Presenter.presentedNotification {
             let actions = presented.notification.actions
             let action = actions[sender.tag]
@@ -247,12 +247,12 @@ public class Presenter: PresenterType {
         }
     }
     
-    func makeNotificationWindowWithStatusBarHeight(height: CGFloat) -> NotificationWindow {
-        let screen = UIScreen.mainScreen()
+    func makeNotificationWindowWithStatusBarHeight(_ height: CGFloat) -> NotificationWindow {
+        let screen = UIScreen.main
         let window = NotificationWindow(frame: CGRect(x: 0.0, y: 0.0, width: screen.bounds.width, height: screen.bounds.height))
         
         window.windowLevel = UIWindowLevelStatusBar - height
-        window.backgroundColor = .clearColor()
+        window.backgroundColor = .clear
         
         // A root view controller is necessary for the window
         // to automatically participate in rotation.
@@ -262,6 +262,6 @@ public class Presenter: PresenterType {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }

@@ -20,19 +20,19 @@ public struct Color {
 }
 
 struct Theme {
-    static func fontOfSize(fontSize: CGFloat) -> UIFont {
+    static func fontOfSize(_ fontSize: CGFloat) -> UIFont {
         return UIFont(name: "apercu-light", size: fontSize)!
     }
 
-    static func boldFontOfSize(fontSize: CGFloat) -> UIFont {
+    static func boldFontOfSize(_ fontSize: CGFloat) -> UIFont {
         return UIFont(name: "apercu-bold", size: fontSize)!
     }
 
-    static func mediumFontOfSize(fontSize: CGFloat) -> UIFont {
+    static func mediumFontOfSize(_ fontSize: CGFloat) -> UIFont {
         return UIFont(name: "apercu-medium", size: fontSize)!
     }
 
-    static func regularFontOfSize(fontSize: CGFloat) -> UIFont {
+    static func regularFontOfSize(_ fontSize: CGFloat) -> UIFont {
         return UIFont(name: "apercu-regular", size: fontSize)!
     }
 }
